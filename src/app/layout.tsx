@@ -4,8 +4,9 @@ import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
+import { cn } from '@/lib/tailwind/utils';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -14,7 +15,14 @@ export const metadata: Metadata = {
 
 const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
   <html lang="pt-br">
-    <body className={inter.className}>{children}</body>
+    <body
+      className={cn(
+        inter.variable,
+        'antialiased font-sans flex flex-col min-h-screen'
+      )}
+    >
+      {children}
+    </body>
   </html>
 );
 
