@@ -4,6 +4,8 @@ import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
 
 import '@/styles/globals.css';
+import { ThemeProvider } from '@/components/theme-provider/theme-provider';
+import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-button';
 import { cn } from '@/lib/tailwind/utils';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -18,10 +20,18 @@ const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
     <body
       className={cn(
         inter.variable,
-        'antialiased font-sans flex flex-col min-h-screen'
+        'antialiased font-sans flex flex-col min-h-screen dark:bg-zinc-900'
       )}
     >
-      {children}
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange
+      >
+        <ThemeToggleButton />
+        {children}
+      </ThemeProvider>
     </body>
   </html>
 );
