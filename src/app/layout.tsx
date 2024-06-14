@@ -2,14 +2,14 @@ import { PropsWithChildren } from 'react';
 
 import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
-
-import '@/styles/globals.css';
 import Link from 'next/link';
 
 import { ThemeProvider } from '@/components/theme-provider/theme-provider';
 import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-button';
+import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/tailwind/utils';
 import { routes } from '@/utils/constants/routes';
+import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
@@ -23,7 +23,7 @@ const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
     <body
       className={cn(
         inter.variable,
-        'antialiased font-sans flex flex-col gap-4 min-h-screen dark:bg-zinc-900'
+        'antialiased font-sans flex flex-col gap-4 min-h-screen bg-white dark:bg-zinc-950'
       )}
     >
       <ThemeProvider
@@ -43,7 +43,10 @@ const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
           </div>
           <ThemeToggleButton />
         </header>
-        <main className="flex flex-col gap-4 p-4 flex-1">{children}</main>
+        <main className="flex flex-col gap-4 p-4 flex-1 max-w-3xl w-full mx-auto">
+          {children}
+        </main>
+        <Toaster />
       </ThemeProvider>
     </body>
   </html>

@@ -15,7 +15,7 @@ const pointerVariants = cva(
 );
 
 export const ClockLoading: FC = () => (
-  <div className="scale-125 flex justify-center items-center fixed top-0 right-0 bottom-0 left-0 bg-white dark:bg-zinc-900">
+  <div className="scale-125 flex justify-center items-center fixed top-0 right-0 bottom-0 left-0 bg-white dark:bg-zinc-950">
     <div
       aria-label="Loading"
       className="rounded-full w-32 h-32 flex items-center justify-center border-black dark:border-white border-2"

@@ -1,11 +1,19 @@
+import { FC } from 'react';
+
 import { NextPage } from 'next';
 
+import { AppointmentCreateForm } from '@/app/(home)/components/create-form/create-form';
+import { awaiter } from '@/utils/functions/awaiter';
+
+const AppointmentList: FC = () => <h2>Appointment List</h2>;
+
 const HomePage: NextPage = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 2048));
+  await awaiter();
 
   return (
     <main>
-      <h1>Home Page</h1>
+      <AppointmentCreateForm />
+      <AppointmentList />
     </main>
   );
 };
