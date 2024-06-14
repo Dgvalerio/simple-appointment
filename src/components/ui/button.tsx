@@ -49,6 +49,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <Comp
+        type="button"
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}

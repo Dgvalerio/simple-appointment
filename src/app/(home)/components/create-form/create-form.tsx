@@ -20,38 +20,48 @@ export const AppointmentCreateForm: FC = () => {
     resolver: zodResolver(appointmentSchema),
   });
 
+  const clearHandler = (): void => form.reset();
+
   const submitHandler: SubmitHandler<Appointment> = async (data) => {
     console.log('submitHandler:', data);
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2>Create Form</h2>
-      <Form.Root<Appointment> {...form} onSubmit={submitHandler}>
-        <div className="flex gap-2">
-          <Form.Input<Appointment>
-            label="Dia"
-            name="day"
-            containerClassName="flex-1"
-            type="date"
-            defaultValue={getToday()}
-          />
-          <Form.Input<Appointment>
-            label="Hora inicial"
-            name="startTime"
-            containerClassName="flex-1"
-            type="time"
-          />
-          <Form.Input<Appointment>
-            label="Hora final"
-            name="endTime"
-            containerClassName="flex-1"
-            type="time"
-          />
-        </div>
-        <Form.Textarea<Appointment> label="Descrição" name="description" />
-        <Button className="end">Criar</Button>
-      </Form.Root>
-    </div>
+    <Form.Root<Appointment>
+      {...form}
+      onSubmit={submitHandler}
+      className="flex flex-col gap-2"
+    >
+      <div className="flex gap-2">
+        <Form.Input<Appointment>
+          label="Dia"
+          name="day"
+          containerClassName="flex-1"
+          type="date"
+          defaultValue={getToday()}
+        />
+        <Form.Input<Appointment>
+          label="Hora inicial"
+          name="startTime"
+          containerClassName="flex-1"
+          type="time"
+        />
+        <Form.Input<Appointment>
+          label="Hora final"
+          name="endTime"
+          containerClassName="flex-1"
+          type="time"
+        />
+      </div>
+      <Form.Textarea<Appointment> label="Descrição" name="description" />
+      <div className="flex justify-between gap-2 mt-2">
+        <Button className="w-[25%]" variant="outline" onClick={clearHandler}>
+          Limpar
+        </Button>
+        <Button className="w-[25%]" type="submit">
+          Criar
+        </Button>
+      </div>
+    </Form.Root>
   );
 };
