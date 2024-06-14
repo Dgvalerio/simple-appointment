@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import { ThemeProvider } from '@/components/theme-provider/theme-provider';
 import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-button';
@@ -51,6 +52,7 @@ const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
         <Toaster />
       </ThemeProvider>
       <Analytics />
+      <SpeedInsights />
     </body>
   </html>
 );
