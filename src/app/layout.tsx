@@ -4,6 +4,8 @@ import type { Metadata, NextPage } from 'next';
 import { Inter } from 'next/font/google';
 import Link from 'next/link';
 
+import { Analytics } from '@vercel/analytics/react';
+
 import { ThemeProvider } from '@/components/theme-provider/theme-provider';
 import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-button';
 import { Toaster } from '@/components/ui/sonner';
@@ -48,6 +50,7 @@ const RootLayout: NextPage<PropsWithChildren> = ({ children }) => (
         </main>
         <Toaster />
       </ThemeProvider>
+      <Analytics />
     </body>
   </html>
 );
