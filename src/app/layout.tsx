@@ -12,6 +12,7 @@ import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-butt
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/tailwind/utils';
 import { routes } from '@/utils/constants/routes';
+import '@/lib/firebase/config';
 import '@/styles/globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
