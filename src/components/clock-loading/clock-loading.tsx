@@ -15,10 +15,10 @@ const pointerVariants = cva(
 );
 
 export const ClockLoading: FC = () => (
-  <div className="scale-125 flex justify-center items-center fixed top-0 right-0 bottom-0 left-0 bg-white dark:bg-zinc-950">
+  <div className="fixed bottom-0 left-0 right-0 top-0 flex scale-125 items-center justify-center bg-white dark:bg-zinc-950">
     <div
       aria-label="Loading"
-      className="rounded-full w-32 h-32 flex items-center justify-center border-black dark:border-white border-2"
+      className="flex h-32 w-32 items-center justify-center rounded-full border-2 border-black dark:border-white"
     >
       <div className={pointerVariants({ pointer: 'hour' })} />
       <div className={pointerVariants({ pointer: 'minute' })} />
