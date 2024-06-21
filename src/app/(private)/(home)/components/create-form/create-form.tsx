@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { appointmentSchema } from '@/app/(home)/components/create-form/schema';
+import { appointmentSchema } from '@/app/(private)/(home)/components/create-form/schema';
 import { Form } from '@/components/form/form';
 import { Button } from '@/components/ui/button';
 
@@ -54,7 +54,7 @@ export const AppointmentCreateForm: FC = () => {
         />
       </div>
       <Form.Textarea<Appointment> label="Descrição" name="description" />
-      <div className="flex justify-between gap-2 mt-2">
+      <div className="mt-2 flex justify-between gap-2">
         <Button className="w-[25%]" variant="outline" onClick={clearHandler}>
           Limpar
         </Button>

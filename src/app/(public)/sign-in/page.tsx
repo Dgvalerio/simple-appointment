@@ -1,13 +1,23 @@
 'use client';
+
+import { useState } from 'react';
+
 import { NextPage } from 'next';
 
+import { EmailCheck } from '@/app/(public)/sign-in/email-check';
+import { PasswordCheck } from '@/app/(public)/sign-in/password-check';
+import { GithubIcon } from '@/components/icons/github';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 
 import { getAuth, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 
 const provider = new GithubAuthProvider();
 
 const SignInPage: NextPage = () => {
+  const [phase, setPhase] = useState<0 | 1>(0);
+  const [email, setEmail] = useState<string>();
+
   const authHandler = (): void => {
     const auth = getAuth();
 
@@ -49,10 +59,25 @@ const SignInPage: NextPage = () => {
       });
   };
 
+  const checkEmailHandler = (email: string): void => {
+    setPhase(1);
+    setEmail(email);
+  };
+
   return (
-    <>
-      Sign In <Button onClick={authHandler}>Github</Button>
-    </>
+    <div className="flex flex-col gap-2 text-center">
+      {phase === 0 && <EmailCheck onSuccess={checkEmailHandler} />}
+      {phase === 1 && email && <PasswordCheck email={email} />}
+      <Separator className="my-3">
+        <p className="bg-background mt-[-7px] px-2 text-xs uppercase text-zinc-400">
+          Ou continue com
+        </p>
+      </Separator>
+      <Button variant="outline" className="gap-2" onClick={authHandler}>
+        <GithubIcon className="h-4 dark:fill-zinc-100" />
+        GitHub
+      </Button>
+    </div>
   );
 };
 

@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import { NextPage } from 'next';
 
-import { AppointmentCreateForm } from '@/app/(home)/components/create-form/create-form';
+import { AppointmentCreateForm } from '@/app/(private)/(home)/components/create-form/create-form';
 import { Separator } from '@/components/ui/separator';
 import { awaiter } from '@/utils/functions/awaiter';
 

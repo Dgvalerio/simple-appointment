@@ -122,14 +122,18 @@ const Wrapper = <TFieldValues extends FieldValues>({
   children,
 }: FormProps.Wrapper<TFieldValues>): ReactNode => (
   <div className={cn('flex flex-col gap-2', containerClassName)}>
-    <FormLabel error={!!error} className={labelClassName} htmlFor={name}>
-      {label}
-    </FormLabel>
+    {label && (
+      <FormLabel error={!!error} className={labelClassName} htmlFor={name}>
+        {label}
+      </FormLabel>
+    )}
     {children}
-    <FormDescription className={descriptionClassName}>
-      {description}
-    </FormDescription>
-    <FormError>{error}</FormError>
+    {description && (
+      <FormDescription className={descriptionClassName}>
+        {description}
+      </FormDescription>
+    )}
+    {error && <FormError>{error}</FormError>}
   </div>
 );
 
