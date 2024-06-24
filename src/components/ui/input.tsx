@@ -1,10 +1,14 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { FC, forwardRef, InputHTMLAttributes } from 'react';
 
+import { Skeleton } from '@/components/ui/skeleton';
+import { withLoadingSkeletonAndRef } from '@/hoc/loading-skeleton-hoc';
 import { cn } from '@/lib/tailwind/utils';
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  loading?: boolean;
+}
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+const InputRef = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => (
     <input
       type={type}
@@ -18,4 +22,15 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   )
 );
 
-Input.displayName = 'Input';
+InputRef.displayName = 'Input';
+
+const InputLoading: FC<InputProps> = ({ className }) => (
+  <Skeleton
+    className={cn('flex h-10 w-full cursor-not-allowed rounded-md', className)}
+  />
+);
+
+export const Input = withLoadingSkeletonAndRef<InputProps, HTMLInputElement>(
+  InputLoading,
+  InputRef
+);
