@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Apontamento Simples',
-  description: 'Apontamento Simples',
+  description: 'Sistema para realizar apontamentos',
 };
 
 interface RootLayoutProps extends PropsWithChildren {}

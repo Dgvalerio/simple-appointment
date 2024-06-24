@@ -65,6 +65,7 @@ ButtonRef.displayName = 'ButtonRef';
 
 const ButtonLoading: FC<ButtonProps> = ({ variant, size }) => (
   <button
+    disabled
     type="button"
     className={cn(buttonVariants({ variant, size }), 'animate-pulse')}
   >
