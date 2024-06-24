@@ -1,10 +1,12 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { ButtonHTMLAttributes, FC, forwardRef } from 'react';
 
 import { Slot } from '@radix-ui/react-slot';
 
+import { withLoadingSkeletonAndRef } from '@/hoc/loading-skeleton-hoc';
 import { cn } from '@/lib/tailwind/utils';
 
 import { cva, type VariantProps } from 'class-variance-authority';
+import { LoaderCircle } from 'lucide-react';
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 dark:ring-offset-zinc-950 dark:focus-visible:ring-zinc-300',
@@ -41,16 +43,17 @@ export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  loading?: boolean;
 }
 
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+const ButtonRef = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : 'button';
 
     return (
       <Comp
         type="button"
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(buttonVariants({ variant, size }), className)}
         ref={ref}
         {...props}
       />
@@ -58,6 +61,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   }
 );
 
-Button.displayName = 'Button';
+ButtonRef.displayName = 'ButtonRef';
 
-export { Button, buttonVariants };
+const ButtonLoading: FC<ButtonProps> = ({ variant, size }) => (
+  <button
+    type="button"
+    className={cn(buttonVariants({ variant, size }), 'animate-pulse')}
+  >
+    <LoaderCircle className="animate-spin" />
+  </button>
+);
+
+export const Button = withLoadingSkeletonAndRef<ButtonProps, HTMLButtonElement>(
+  ButtonLoading,
+  ButtonRef
+);
+
+Button.displayName = 'Button';

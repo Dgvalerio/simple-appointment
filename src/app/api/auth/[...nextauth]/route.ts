@@ -1,15 +1,41 @@
 import NextAuth from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
+import Credentials from 'next-auth/providers/credentials';
+
+import { UserSession } from '@/lib/next-auth/user-session.types';
 
 const handler = NextAuth({
-  // Configure one or more authentication providers
   providers: [
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+    Credentials({
+      id: 'github',
+      name: 'github-credentials',
+      credentials: {
+        id: { label: 'id', type: 'text' },
+        email: { label: 'email', type: 'email' },
+        photo: { label: 'photo', type: 'text' },
+        name: { label: 'name', type: 'text' },
+      },
+      async authorize(credentials) {
+        if (!credentials) return null;
+
+        const user: UserSession = {
+          id: credentials.id,
+          email: credentials.email || 'email@mail.com',
+          photo: credentials.photo || 'https://picsum.photos/128/128',
+          name: credentials.name || 'Sem Nome',
+        };
+
+        return user;
+      },
     }),
-    // ...add more providers here
   ],
+  callbacks: {
+    async jwt(props) {
+      return { ...props.token, ...props.user };
+    },
+    async session(props) {
+      return { ...props.session, ...props.token, ...props.user };
+    },
+  },
 });
 
 export { handler as GET, handler as POST };

@@ -19,14 +19,23 @@ const passwordCheckSchema = z.object({
 
 type PasswordCheckData = z.infer<typeof passwordCheckSchema>;
 
-export const PasswordCheck: FC<{ email: string }> = ({ email }) => {
+export interface PasswordCheckProps {
+  email: string;
+  loading?: boolean;
+  onSuccess(data: PasswordCheckData): Promise<void>;
+}
+
+export const PasswordCheck: FC<PasswordCheckProps> = ({
+  email,
+  loading,
+  onSuccess,
+}) => {
   const form = useForm<PasswordCheckData>({
     resolver: zodResolver(passwordCheckSchema),
   });
 
-  const submitHandler: SubmitHandler<PasswordCheckData> = async (data) => {
-    console.log('submitHandler:', data);
-  };
+  const submitHandler: SubmitHandler<PasswordCheckData> = async (data) =>
+    onSuccess(data);
 
   useEffect(() => {
     form.setValue('email', email);
@@ -51,7 +60,9 @@ export const PasswordCheck: FC<{ email: string }> = ({ email }) => {
         containerClassName="flex-1"
         type="password"
       />
-      <Button type="submit">Entrar</Button>
+      <Button type="submit" loading={loading}>
+        Entrar
+      </Button>
     </Form.Root>
   );
 };

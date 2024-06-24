@@ -18,9 +18,12 @@ const emailCheckSchema = z.object({
 
 type EmailCheckData = z.infer<typeof emailCheckSchema>;
 
-export const EmailCheck: FC<{ onSuccess(email: string): void }> = ({
-  onSuccess,
-}) => {
+export interface EmailCheckProps {
+  onSuccess(email: string): void;
+  loading?: boolean;
+}
+
+export const EmailCheck: FC<EmailCheckProps> = ({ onSuccess, loading }) => {
   const form = useForm<EmailCheckData>({
     resolver: zodResolver(emailCheckSchema),
   });
@@ -44,7 +47,9 @@ export const EmailCheck: FC<{ onSuccess(email: string): void }> = ({
         containerClassName="flex-1"
         type="email"
       />
-      <Button type="submit">Checar e-mail</Button>
+      <Button type="submit" loading={loading}>
+        Checar e-mail
+      </Button>
     </Form.Root>
   );
 };

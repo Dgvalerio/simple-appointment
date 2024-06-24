@@ -5,8 +5,6 @@ import { SessionProvider as Provider } from 'next-auth/react';
 
 interface SessionProviderProps extends PropsWithChildren {}
 
-export const SessionProvider: FC<SessionProviderProps> = ({ children }) => {
-  console.log('SessionProvider');
-
-  return <Provider>{children}</Provider>;
-};
+export const SessionProvider: FC<SessionProviderProps> = ({ children }) => (
+  <Provider>{children}</Provider>
+);

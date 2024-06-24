@@ -23,7 +23,7 @@ export const AppointmentCreateForm: FC = () => {
   const clearHandler = (): void => form.reset();
 
   const submitHandler: SubmitHandler<Appointment> = async (data) => {
-    console.log('submitHandler:', data);
+    console.log('AppointmentCreateForm > submitHandler:', data);
   };
 
   return (
