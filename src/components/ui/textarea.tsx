@@ -1,11 +1,15 @@
-import { forwardRef, TextareaHTMLAttributes } from 'react';
+import { FC, forwardRef, TextareaHTMLAttributes } from 'react';
 
+import { Skeleton } from '@/components/ui/skeleton';
+import { withLoadingSkeletonAndRef } from '@/hoc/loading-skeleton-hoc';
 import { cn } from '@/lib/tailwind/utils';
 
 export interface TextareaProps
-  extends TextareaHTMLAttributes<HTMLTextAreaElement> {}
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+  loading?: boolean;
+}
 
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
+const TextareaRef = forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, ...props }, ref) => (
     <textarea
       className={cn(
@@ -18,6 +22,18 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
   )
 );
 
-Textarea.displayName = 'Textarea';
+TextareaRef.displayName = 'Textarea';
 
-export { Textarea };
+const TextareaLoading: FC<TextareaProps> = ({ className }) => (
+  <Skeleton
+    className={cn(
+      'flex min-h-[80px] w-full cursor-not-allowed rounded-md',
+      className
+    )}
+  />
+);
+
+export const Textarea = withLoadingSkeletonAndRef<
+  TextareaProps,
+  HTMLTextAreaElement
+>(TextareaLoading, TextareaRef);
