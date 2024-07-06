@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 import Link from 'next/link';
 
-import { PerfilImage } from '@/components/perfil-image/perfil-image';
+import { PerfilMenu } from '@/components/perfil-menu/perfil-menu';
 import { ThemeToggleButton } from '@/components/theme-provider/theme-toggle-button';
 import { routes } from '@/utils/constants/routes';
 
@@ -17,7 +17,7 @@ export const Header: FC = () => (
       </Link>
     </div>
     <div className="flex items-center gap-2">
-      <PerfilImage />
+      <PerfilMenu />
       <ThemeToggleButton />
     </div>
   </header>
