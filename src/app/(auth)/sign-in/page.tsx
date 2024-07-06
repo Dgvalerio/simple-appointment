@@ -3,18 +3,17 @@ import { useState } from 'react';
 
 import { NextPage } from 'next';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 import { FirebaseError } from '@firebase/util';
 
 import {
   EmailCheck,
   EmailCheckProps,
-} from '@/app/(public)/sign-in/email-check';
+} from '@/app/(auth)/sign-in/components/email-check';
 import {
   PasswordCheck,
   PasswordCheckProps,
-} from '@/app/(public)/sign-in/password-check';
+} from '@/app/(auth)/sign-in/components/password-check';
 import { GithubIcon } from '@/components/icons/github';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -26,8 +25,6 @@ import { getAuth, GithubAuthProvider, signInWithPopup } from 'firebase/auth';
 const provider = new GithubAuthProvider();
 
 const SignInPage: NextPage = () => {
-  const router = useRouter();
-
   const [loading, setLoading] = useState(false);
   const [phase, setPhase] = useState<0 | 1>(0);
   const [email, setEmail] = useState<string>();
@@ -46,9 +43,7 @@ const SignInPage: NextPage = () => {
         name: result.user.displayName || 'Sem Nome',
       };
 
-      await signIn('github', { ...user });
-
-      router.push(routes.home);
+      await signIn('github', { ...user, callbackUrl: routes.home });
     } catch (e) {
       const error = e as FirebaseError;
 
