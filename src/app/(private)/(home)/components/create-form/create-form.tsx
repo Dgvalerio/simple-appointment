@@ -1,64 +1,32 @@
 'use client';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { useSession } from 'next-auth/react';
-
-import { addDoc, collection } from '@firebase/firestore';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { appointmentSchema } from '@/app/(private)/(home)/components/create-form/schema';
 import { Form } from '@/components/form/form';
 import { Button } from '@/components/ui/button';
-import { db } from '@/lib/firebase/config';
+import { useAppointmentController } from '@/controllers/appointment/appointment.hook';
 
 import { format } from 'date-fns';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 const getToday = (): string => format(new Date(), 'yyyy-MM-dd');
 
-type CreateAppointment = z.infer<typeof appointmentSchema>;
-
-const AppointmentController = {
-  async create(data: CreateAppointment & { userId?: string }): Promise<void> {
-    if (!data.userId) {
-      return void toast.warning('Nenhum usuário foi informado!');
-    }
-
-    await addDoc(collection(db, 'appointment'), {
-      day: data.day,
-      startTime: data.startTime,
-      endTime: data.endTime,
-      description: data.description,
-      userId: data.userId,
-    });
-
-    toast.success(
-      `Apontamento criado para o dia "${data.day} as ${data.startTime}:${data.endTime}"`
-    );
-  },
-};
+export type CreateAppointment = z.infer<typeof appointmentSchema>;
 
 export const AppointmentCreateForm: FC = () => {
-  const { data: sessionData } = useSession();
+  const { loading, create } = useAppointmentController();
+
   const form = useForm<CreateAppointment>({
     resolver: zodResolver(appointmentSchema),
   });
 
-  const [loading, setLoading] = useState(false);
-
   const clearHandler = (): void => form.reset();
 
   const submitHandler: SubmitHandler<CreateAppointment> = async (formData) => {
-    setLoading(true);
-
-    await AppointmentController.create({
-      ...formData,
-      userId: sessionData?.id,
-    });
-
-    setLoading(false);
+    await create(formData);
   };
 
   return (
