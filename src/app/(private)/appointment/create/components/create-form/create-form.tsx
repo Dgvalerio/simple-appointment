@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { appointmentSchema } from '@/app/(private)/(home)/components/create-form/schema';
+import { appointmentSchema } from '@/app/(private)/appointment/create/components/create-form/schema';
 import { Form } from '@/components/form/form';
 import { Button } from '@/components/ui/button';
 import { useAppointmentController } from '@/controllers/appointment/appointment.hook';

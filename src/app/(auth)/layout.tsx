@@ -19,22 +19,23 @@ const PublicLayout: NextPage<PublicLayoutProps> = async ({ children }) => {
   return (
     <main
       className={cn(
-        'm-auto flex max-h-[80vh] w-full max-w-[80%] flex-1',
-        'rounded border border-zinc-700'
+        'm-auto flex w-full flex-1 md:max-h-[80vh] md:max-w-[80%]',
+        'border border-zinc-700 md:rounded'
       )}
     >
-      <aside className="flex flex-[2] flex-col rounded-l bg-zinc-100 bg-[url('/16W7.webp')] bg-cover p-4 dark:bg-zinc-900">
+      <aside className="flex flex-[1] flex-col bg-zinc-100 bg-auth bg-cover bg-bottom p-4 dark:bg-zinc-900 md:flex-[2] md:rounded-l">
         <header className="flex justify-end">
           <ThemeToggleButton />
         </header>
       </aside>
-      <section className="flex flex-[3] flex-col items-center gap-4 rounded-r p-4">
-        <span className="font-black uppercase italic text-zinc-900/60 transition hover:text-opacity-100 dark:text-zinc-100/60">
+      <section className="flex flex-[4] flex-col items-center gap-4 rounded-r p-4 md:flex-[3]">
+        <span className="font-black uppercase text-zinc-900/60 transition hover:text-opacity-100 dark:text-zinc-100/60">
           Apontamento Simples
         </span>
-        <div className="m-auto flex w-full max-w-[60%] flex-col">
+        <div className="m-auto flex w-full flex-col md:max-w-[60%]">
           {children}
         </div>
+        <div className="h-6" />
       </section>
     </main>
   );

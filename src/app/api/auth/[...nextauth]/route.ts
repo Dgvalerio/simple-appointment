@@ -3,17 +3,39 @@ import Credentials from 'next-auth/providers/credentials';
 
 import { UserSession } from '@/lib/next-auth/user-session.types';
 
+const credentials: Record<
+  keyof UserSession,
+  { label: keyof UserSession; type: string }
+> = {
+  id: { label: 'id', type: 'text' },
+  email: { label: 'email', type: 'email' },
+  photo: { label: 'photo', type: 'text' },
+  name: { label: 'name', type: 'text' },
+};
+
 const handler = NextAuth({
   providers: [
     Credentials({
       id: 'github',
       name: 'github-credentials',
-      credentials: {
-        id: { label: 'id', type: 'text' },
-        email: { label: 'email', type: 'email' },
-        photo: { label: 'photo', type: 'text' },
-        name: { label: 'name', type: 'text' },
+      credentials,
+      async authorize(credentials) {
+        if (!credentials) return null;
+
+        const user: UserSession = {
+          id: credentials.id,
+          email: credentials.email || 'email@mail.com',
+          photo: credentials.photo || 'https://picsum.photos/128/128',
+          name: credentials.name || 'Sem Nome',
+        };
+
+        return user;
       },
+    }),
+    Credentials({
+      id: 'firebase',
+      name: 'firebase-credentials',
+      credentials,
       async authorize(credentials) {
         if (!credentials) return null;
 

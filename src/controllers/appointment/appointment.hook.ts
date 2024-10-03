@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 
 import { useSession } from 'next-auth/react';
 
-import { CreateAppointment } from '@/app/(private)/(home)/components/create-form/create-form';
+import { CreateAppointment } from '@/app/(private)/appointment/create/components/create-form/create-form';
 import {
   Appointment,
   AppointmentController,

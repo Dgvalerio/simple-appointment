@@ -5,11 +5,13 @@ import {
   PropsWithChildren,
   ReactNode,
   useMemo,
+  useState,
 } from 'react';
 import {
   FieldValues,
   FormProvider,
   Path,
+  PathValue,
   SubmitHandler,
   useFormContext,
   UseFormReturn,
@@ -17,10 +19,28 @@ import {
 
 import { LabelProps } from '@radix-ui/react-label';
 
+import { Button } from '@/components/ui/button';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { FormField } from '@/components/ui/form';
 import { Input, InputProps } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Textarea, TextareaProps } from '@/components/ui/textarea';
 import { cn } from '@/lib/tailwind/utils';
+
+import { CheckIcon, ChevronDown } from 'lucide-react';
 
 export namespace FormProps {
   export interface Root<TFieldValues extends FieldValues>
@@ -37,10 +57,18 @@ export namespace FormProps {
     description?: string;
     descriptionClassName?: ComponentProps<'p'>['className'];
     containerClassName?: ComponentProps<'div'>['className'];
+    testId?: string;
   }
 
   export type Input<TFieldValues extends FieldValues> =
     ComumFieldProps<TFieldValues> & InputProps;
+
+  export type Combobox<TFieldValues extends FieldValues> =
+    ComumFieldProps<TFieldValues> & {
+      loading?: boolean;
+      placeholder?: string;
+      items: { label: string; value: string }[];
+    };
 
   export type Textarea<TFieldValues extends FieldValues> =
     ComumFieldProps<TFieldValues> & TextareaProps;
@@ -49,7 +77,7 @@ export namespace FormProps {
 
   export type Description = ComponentProps<'p'>;
 
-  export type Error = ComponentProps<'p'>;
+  export type Error = ComponentProps<'p'> & { testId: string };
 
   export type Wrapper<TFieldValues extends FieldValues> =
     ComumFieldProps<TFieldValues> & PropsWithChildren & { error?: string };
@@ -79,7 +107,10 @@ const FormLabel: FC<FormProps.Label> = ({
 }) =>
   children && (
     <Label
-      className={cn(error && 'text-red-500 dark:text-red-900', className)}
+      className={cn(
+        error && 'font-bold text-red-500 dark:text-red-900',
+        className
+      )}
       {...props}
     >
       {children}
@@ -100,12 +131,13 @@ const FormDescription: FC<FormProps.Description> = ({
     </p>
   );
 
-const FormError: FC<FormProps.Error> = ({ children, className }) => (
+const FormError: FC<FormProps.Error> = ({ children, className, testId }) => (
   <p
     className={cn(
       'text-sm font-medium text-red-500 dark:text-red-900',
       className
     )}
+    data-test={testId}
   >
     {children}
   </p>
@@ -133,7 +165,7 @@ const Wrapper = <TFieldValues extends FieldValues>({
         {description}
       </FormDescription>
     )}
-    {error && <FormError>{error}</FormError>}
+    {error && <FormError testId={`${name}-input-error`}>{error}</FormError>}
   </div>
 );
 
@@ -144,6 +176,7 @@ const FormInput = <TFieldValues extends FieldValues>({
   description,
   descriptionClassName,
   containerClassName,
+  onChange,
   ...props
 }: FormProps.Input<TFieldValues>): ReactNode => {
   const {
@@ -151,7 +184,7 @@ const FormInput = <TFieldValues extends FieldValues>({
     formState: { errors },
   } = useFormContext<TFieldValues>();
 
-  const error = useMemo(() => errors[name], [errors, name]);
+  const error = errors[name];
 
   return (
     <Wrapper<TFieldValues>
@@ -163,7 +196,12 @@ const FormInput = <TFieldValues extends FieldValues>({
       containerClassName={containerClassName}
       error={error ? String(error?.message) : undefined}
     >
-      <Input aria-invalid={!!error} {...props} {...register(name)} />
+      <Input
+        aria-invalid={!!error}
+        data-test={props.testId || `${name}-input`}
+        {...props}
+        {...register(name, { onChange })}
+      />
     </Wrapper>
   );
 };
@@ -199,4 +237,119 @@ const FormTextarea = <TFieldValues extends FieldValues>({
   );
 };
 
-export const Form = { Root, Input: FormInput, Textarea: FormTextarea };
+export const FormCombobox = <TFieldValues extends FieldValues>({
+  name,
+  label,
+  labelClassName,
+  description,
+  descriptionClassName,
+  containerClassName,
+  items,
+  placeholder,
+  loading,
+}: FormProps.Combobox<TFieldValues>): ReactNode => {
+  const {
+    control,
+    setValue,
+    formState: { errors },
+  } = useFormContext<TFieldValues>();
+
+  const [open, setOpen] = useState(false);
+
+  const selectHandler = (value: string): void => {
+    setValue(name, value as PathValue<TFieldValues, Path<TFieldValues>>);
+    setOpen(false);
+  };
+
+  const error = useMemo(() => errors[name], [errors, name]);
+
+  if (loading)
+    return (
+      <Skeleton
+        className={cn(
+          'flex h-10 w-full cursor-not-allowed rounded-md',
+          containerClassName
+        )}
+      />
+    );
+
+  return (
+    <Wrapper<TFieldValues>
+      name={name}
+      label={label}
+      labelClassName={labelClassName}
+      description={description}
+      descriptionClassName={descriptionClassName}
+      containerClassName={containerClassName}
+      error={error ? String(error?.message) : undefined}
+    >
+      <FormField
+        control={control}
+        name={name}
+        render={({ field }) => (
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className={cn(
+                  'justify-between',
+                  !field.value && 'text-muted-foreground'
+                )}
+                data-test={`${name}-combobox-trigger`}
+              >
+                {field.value
+                  ? items.find((item) => item.value === field.value)?.label
+                  : placeholder || label}
+                <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              className={cn(
+                'p-0',
+                'w-full min-w-[var(--radix-popover-trigger-width)] max-w-[var(--radix-popover-trigger-width)]'
+              )}
+            >
+              <Command>
+                <CommandInput
+                  placeholder={placeholder || label}
+                  className="h-9"
+                />
+                <CommandList>
+                  <CommandEmpty>Sem itens</CommandEmpty>
+                  <CommandGroup data-test={`${name}-combobox-group`}>
+                    {items.map((item) => (
+                      <CommandItem
+                        value={item.label}
+                        key={item.value}
+                        onSelect={selectHandler.bind(null, item.value)}
+                      >
+                        {item.label}
+                        <CheckIcon
+                          className={cn(
+                            'ml-auto h-4 w-4',
+                            item.value === field.value
+                              ? 'opacity-100'
+                              : 'opacity-0'
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        )}
+      />
+    </Wrapper>
+  );
+};
+
+export const Form = {
+  Root,
+  Input: FormInput,
+  Textarea: FormTextarea,
+  Combobox: FormCombobox,
+};
