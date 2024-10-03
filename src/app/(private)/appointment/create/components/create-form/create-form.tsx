@@ -50,6 +50,7 @@ export const AppointmentCreateForm: FC = () => {
           name="startTime"
           containerClassName="flex-1"
           type="time"
+          defaultValue="00:00"
         />
         <Form.Input<CreateAppointment>
           loading={loading}
@@ -57,6 +58,7 @@ export const AppointmentCreateForm: FC = () => {
           name="endTime"
           containerClassName="flex-1"
           type="time"
+          defaultValue="00:01"
         />
       </div>
       <Form.Textarea<CreateAppointment>
