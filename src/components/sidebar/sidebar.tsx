@@ -51,6 +51,11 @@ export const SideBar: FC = () => {
             icon: 'more_time',
             link: routes.addAppointment,
           },
+          {
+            title: 'Carregar dados',
+            icon: 'work_update',
+            link: routes.loadData,
+          },
         ]}
       />
       <Separator />

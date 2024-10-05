@@ -42,6 +42,12 @@ const HomePage: NextPage = async () => {
           title="Adicionar apontamento"
           testId="add-appointment"
         />
+        <Item
+          icon="work_update"
+          link={routes.loadData}
+          title="Carregar dados"
+          testId="load-data"
+        />
       </div>
     </main>
   );

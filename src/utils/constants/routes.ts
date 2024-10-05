@@ -3,6 +3,7 @@ interface Routes {
   signIn: string;
   signUp: string;
   addAppointment: string;
+  loadData: string;
 }
 
 export const routes: Routes = {
@@ -10,4 +11,5 @@ export const routes: Routes = {
   signIn: '/sign-in',
   signUp: '/sign-up',
   addAppointment: '/appointment/create',
+  loadData: '/load-data',
 };
