@@ -21,6 +21,7 @@ const mountDate = ({ day, endTime, startTime }: Appointment): string => {
 
 type AppointmentsGroupByDay = Record<string, Appointment[]>;
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars,unused-imports/no-unused-vars
 const groupAppointmentsByDay = (
   appointments: Appointment[]
 ): AppointmentsGroupByDay => {

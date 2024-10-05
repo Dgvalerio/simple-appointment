@@ -54,7 +54,7 @@ const SignInPage: NextPage = () => {
         'Houve uma falha ao realizar o login, verifique seus dados e tente novamente.'
       );
 
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-console
       console.warn({ error, credential });
     } finally {
       setLoading(false);
@@ -87,7 +87,7 @@ const SignInPage: NextPage = () => {
         'Houve uma falha ao realizar o login, verifique seus dados e tente novamente.'
       );
 
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-console
       console.warn({ error });
     } finally {
       setLoading(false);
