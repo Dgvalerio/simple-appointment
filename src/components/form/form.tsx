@@ -299,9 +299,11 @@ export const FormCombobox = <TFieldValues extends FieldValues>({
                 )}
                 data-test={`${name}-combobox-trigger`}
               >
-                {field.value
-                  ? items.find((item) => item.value === field.value)?.label
-                  : placeholder || label}
+                <span className="truncate">
+                  {field.value
+                    ? items.find((item) => item.value === field.value)?.label
+                    : placeholder || label}
+                </span>
                 <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>
             </PopoverTrigger>
