@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { ClientProjectCategorySelect } from '@/app/(private)/appointment/create/components/create-form/client-project-category-select';
 import { appointmentSchema } from '@/app/(private)/appointment/create/components/create-form/schema';
 import { Form } from '@/components/form/form';
 import { Button } from '@/components/ui/button';
@@ -35,6 +36,7 @@ export const AppointmentCreateForm: FC = () => {
       onSubmit={submitHandler}
       className="flex flex-col gap-2"
     >
+      <ClientProjectCategorySelect loading={loading} />
       <div className="flex gap-2">
         <Form.Input<CreateAppointment>
           loading={loading}

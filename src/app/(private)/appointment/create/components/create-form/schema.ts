@@ -4,6 +4,9 @@ import { z } from 'zod';
 
 export const appointmentSchema = z
   .object({
+    client: z.string({ required_error: 'O cliente deve ser informado.' }),
+    project: z.string({ required_error: 'O projeto deve ser informado.' }),
+    category: z.string({ required_error: 'A categoria deve ser informada.' }),
     day: z.string().min(1, 'A data deve ser informada.'),
     startTime: z.string().min(1, 'A hora inicial deve ser informada.'),
     endTime: z.string().min(1, 'A hora final deve ser informada.'),
